@@ -12,7 +12,7 @@ const CarSearch = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      {/* 🔍 Search Bar */}
+      {/*  Search Bar */}
       <div className="max-w-xl mx-auto mb-8">
         <input
           type="text"
@@ -23,7 +23,7 @@ const CarSearch = () => {
         />
       </div>
 
-      {/* 🚗 Display Filtered Cars */}
+      {/* Display Filtered Cars */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCars.length > 0 ? (
           filteredCars.map((car) => (

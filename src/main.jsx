@@ -18,7 +18,6 @@ import Home from './pages/Home/Home';
 import FeaturedCars from './pages/Home/FeaturedCars';
 import WhyRentWithUs from './pages/Home/WhyRentWithUs';
 import CarDetails from './pages/CarDetails';
-import CarSearch from './components/CarSearch';
 import PrivateRoute from './routes/PrivateRoute';
 const router = createBrowserRouter([
   {
@@ -37,14 +36,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         Component: WhyRentWithUs,
-      },
-      {
-        path: "/",
-        loader: async () => {
-          const res = await fetch("http://localhost:3000/cars");
-          return res.json();
-        },
-        Component: CarSearch,
       },
       {
         path: "/login",
@@ -94,7 +85,6 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      
     ],
   },
 ]);

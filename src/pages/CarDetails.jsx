@@ -32,7 +32,8 @@ const CarDetails = () => {
       const booking = {
         carId: car._id,
         carName: car.name,
-        userEmail: localStorage.getItem("user-email"), // optional if stored
+        imageURL: car.image,
+        userEmail: localStorage.getItem("user-email"),
         rentPrice: car.rentPrice,
         providerName: car.providerName,
         providerEmail: car.providerEmail,
@@ -59,7 +60,7 @@ const CarDetails = () => {
       const data = await res.json();
 
       if (res.ok) {
-        toast.success("🚗 Car booked successfully!");
+        toast.success("Car booked successfully!");
         navigate("/my-bookings");
       } else {
         toast.error(data.message || "Failed to book this car.");
@@ -93,7 +94,7 @@ const CarDetails = () => {
           {/* Image */}
           <div className="relative">
             <img
-              src={car.imageURL}
+              src={car.image}
               alt={car.name}
               className="w-full h-full object-cover"
             />
@@ -112,7 +113,7 @@ const CarDetails = () => {
                 {car.description}
               </p>
 
-              <div className="grid grid-cols-2 gap-4 text-sm text-gray-700 mb-6">
+              <div className="grid grid-cols-2 gap-4 text-sm text-gray-700 mb-2">
                 <div className="bg-gray-100 rounded-lg p-3">
                   <span className="block font-semibold text-gray-800">
                     Category

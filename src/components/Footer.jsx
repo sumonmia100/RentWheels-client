@@ -3,16 +3,11 @@ import { Link } from "react-router";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-200 mt-10">
+    <footer className="bg-gray-900 text-gray-200 mt-1">
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Logo & About */}
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <img
-              src="https://i.ibb.co/mTXBL3M/car-logo.png"
-              alt="RentWheels"
-              className="h-8 w-8"
-            />
             <h2 className="text-2xl font-bold text-white">
               Rent<span className="text-blue-500">Wheels</span>
             </h2>
@@ -82,7 +77,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Footer Bottom */}
+     
       <div className="border-t border-gray-700 text-center py-4 text-sm text-gray-500">
         © {new Date().getFullYear()} RentWheels. All rights reserved. |
         <Link to="#" className="text-blue-400 hover:underline ml-1">
