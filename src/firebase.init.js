@@ -5,13 +5,14 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBzJbGN7yNfvEwxA8EuddqH3N4ml4v0xpI",
-  authDomain: "rent-wheels-77bcc.firebaseapp.com",
-  projectId: "rent-wheels-77bcc",
-  storageBucket: "rent-wheels-77bcc.firebasestorage.app",
-  messagingSenderId: "905212559903",
-  appId: "1:905212559903:web:a1980f43ca4b0029bc4b2a"
+  apiKey: import.meta.env.VITE_apiKey,
+  authDomain:import.meta.env.VITE_authDomain,
+  projectId: import.meta.env.VITE_projectId,
+  storageBucket: import.meta.env.VITE_storageBucket,
+  messagingSenderId: import.meta.env.VITE_messagingSenderId,
+  appId:import.meta.env.VITE_appId
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+export default app;

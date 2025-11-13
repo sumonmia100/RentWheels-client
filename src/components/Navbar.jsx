@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../contexts/AuthProvider";
 import { FaBars, FaTimes } from "react-icons/fa";
 import toast from "react-hot-toast";
+import Spinner from "./spinner";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -16,7 +17,7 @@ const Navbar = () => {
         toast.success("Logged out successfully!");
         navigate("/");
       })
-      .catch(() => toast.error("Logout failed !"));
+      .catch(() => toast.error("Logout failed!"));
   };
 
   const links = (
@@ -79,7 +80,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
+    <nav className="bg-gray-300 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center h-16">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
@@ -164,6 +165,7 @@ const Navbar = () => {
           )}
         </ul>
       )}
+      {navigate.state === "loading" && <Spinner></Spinner>}
     </nav>
   );
 };

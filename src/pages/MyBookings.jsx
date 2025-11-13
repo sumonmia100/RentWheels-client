@@ -8,9 +8,9 @@ import Swal from "sweetalert2";
 const MyBookings = () => {
   const { user } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // 🔹 Load bookings for the logged-in user
+
+
   useEffect(() => {
     if (!user?.email) return;
 
@@ -32,10 +32,10 @@ const MyBookings = () => {
         console.error(err);
         toast.error("Failed to load your bookings");
       })
-      .finally(() => setLoading(false));
+      
   }, [user]);
 
-  // 🔹 Handle delete booking with SweetAlert modal
+  
   const handleDelete = async (id) => {
     const token = localStorage.getItem("access-token");
 
@@ -92,16 +92,8 @@ const MyBookings = () => {
     }
   };
 
-  // 🔹 Loading spinner
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-[60vh]">
-        <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"></div>
-      </div>
-    );
-  }
 
-  // 🔹 No bookings UI
+
   if (bookings.length === 0) {
     return (
       <div className="text-center mt-20">
@@ -114,7 +106,7 @@ const MyBookings = () => {
     );
   }
 
-  // 🔹 Bookings list UI
+
   return (
     <div className="container mx-auto px-4 py-10">
       <h2 className="text-3xl font-bold mb-8 text-center text-blue-600">

@@ -4,6 +4,7 @@ import './App.css'
 import { Outlet } from "react-router";
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
+import Spinner from './components/spinner';
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
   return (
     <div className='flex flex-col min-h-screen'>
       <Navbar></Navbar>
+      <Spinner></Spinner>
       <main className=''>
         <Outlet></Outlet>
       </main>

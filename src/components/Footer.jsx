@@ -60,16 +60,22 @@ const Footer = () => {
           </p>
 
           <div className="flex gap-4 mt-4 text-xl">
-            <a href="#" className="hover:text-blue-400">
+            <a
+              href="https://www.facebook.com/md.sumon.mia.232638"
+              className="hover:text-blue-400"
+            >
               <FaFacebook />
             </a>
             <a href="#" className="hover:text-blue-400">
               <FaInstagram />
             </a>
-            <a href="#" className="hover:text-blue-400">
+            <a href="https://x.com/snehaarisa" className="hover:text-blue-400">
               <FaTwitter />
             </a>
-            <a href="#" className="hover:text-blue-400">
+            <a
+              href="https://www.linkedin.com/notifications/?filter=all"
+              className="hover:text-blue-400"
+            >
               <FaLinkedin />
             </a>
           </div>

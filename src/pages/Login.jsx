@@ -18,13 +18,34 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
+  // 🔹 Get JWT token and save in localStorage
+  const getToken = async (userEmail) => {
+    try {
+      const res = await fetch("http://localhost:3000/jwt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email:userEmail}),
+      });
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem("access-token", data.token);
+        toast.success("Login successful!");
+        navigate("/");
+      }
+    } catch (err) {
+      toast.error("Failed to get token");
+      console.error(err);
+    }
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
     setLoading(true);
 
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
+      .then((result) => {
         setLoading(false);
+        getToken(result.user.email);
         toast.success("Login successful!");
         navigate(from, { replace: true });
       })
@@ -40,7 +61,8 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     googleLogin()
-      .then(() => {
+      .then((result) => {
+        getToken(result.user.email);
         toast.success("Logged in with Google!");
         navigate(from, { replace: true });
       })
