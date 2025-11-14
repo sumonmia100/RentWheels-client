@@ -29,7 +29,7 @@ const Login = () => {
       const data = await res.json();
       if (data.token) {
         localStorage.setItem("access-token", data.token);
-        toast.success("Login successful!");
+        // toast.success("Login successful!");
         navigate("/");
       }
     } catch (err) {

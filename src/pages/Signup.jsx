@@ -22,22 +22,36 @@ const Signup = () => {
     email: "",
     password: "",
   });
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-//   const validatePassword = (password) => {
-//     const upper = /[A-Z]/.test(password);
-//     const lower = /[a-z]/.test(password);
-//     const length = password.length >= 6;
-//     return upper && lower && length;
-//   };
-const validatePassword = (password) =>
-  /[A-Z]/.test(password) && /[a-z]/.test(password) && password.length >= 6;
+  // PASSWORD VALIDATION
+  const validatePassword = (password) =>
+    /[A-Z]/.test(password) && /[a-z]/.test(password) && password.length >= 6;
 
+  // 🔥 GET JWT TOKEN AFTER SIGNUP
+  const getToken = async (userEmail) => {
+    try {
+      const res = await fetch("https://rent-wheel-server-side.vercel.app/jwt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: userEmail }),
+      });
 
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem("access-token", data.token);
+      }
+    } catch (err) {
+      console.error("Token error:", err);
+    }
+  };
+
+  // 🔹 Handle normal signup
   const handleSignup = (e) => {
     e.preventDefault();
     const { name, photoURL, email, password } = formData;
@@ -51,28 +65,34 @@ const validatePassword = (password) =>
       return;
     }
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        updateProfile(result.user, {
-          displayName: name,
-          photoURL: photoURL,
-        }).then(() => {
-          toast.success("Account created successfully!");
-          navigate("/");
-        });
-      })
-      .catch((err) =>
-        Swal.fire({
-          icon: "error",
-          title: "Signup Failed",
-          text: err.message.split(":")[1] || "Please try again later",
-        })
-      );
-  };
+  createUserWithEmailAndPassword(auth, email, password)
+  .then(async (result) => {
+    await updateProfile(result.user, {
+      displayName: name,
+      photoURL: photoURL,
+    });
 
+    // MUST TAKE TOKEN RIGHT HERE
+    await getToken(result.user.email);
+
+    toast.success("Account created successfully!");
+    navigate("/");
+  })
+  .catch((err) =>
+    Swal.fire({
+      icon: "error",
+      title: "Signup Failed",
+      text: err.message.split(":")[1] || "Please try again later",
+    })
+  );
+  
+}
+
+  // 🔹 Handle Google signup
   const handleGoogleSignup = () => {
     signInWithPopup(auth, googleProvider)
-      .then(() => {
+      .then(async (result) => {
+        await getToken(result.user.email); // ⬅ Token added
         toast.success("Signed up with Google!");
         navigate("/");
       })
