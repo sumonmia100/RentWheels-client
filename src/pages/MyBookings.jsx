@@ -1,22 +1,21 @@
+"use client";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
 import toast from "react-hot-toast";
 import { FaCarSide, FaTrashAlt } from "react-icons/fa";
-import { motion } from "framer-motion";
 import Swal from "sweetalert2";
+import { motion } from "framer-motion";
 
 const MyBookings = () => {
   const { user } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
-
-
 
   useEffect(() => {
     if (!user?.email) return;
 
     const token = localStorage.getItem("access-token");
 
-    fetch(`http://localhost:3000/bookings?email=${user.email}`, {
+    fetch(`http://localhost:3000/bookings`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -31,11 +30,9 @@ const MyBookings = () => {
       .catch((err) => {
         console.error(err);
         toast.error("Failed to load your bookings");
-      })
-      
+      });
   }, [user]);
 
-  
   const handleDelete = async (id) => {
     const token = localStorage.getItem("access-token");
 
@@ -92,8 +89,6 @@ const MyBookings = () => {
     }
   };
 
-
-
   if (bookings.length === 0) {
     return (
       <div className="text-center mt-20">
@@ -105,7 +100,6 @@ const MyBookings = () => {
       </div>
     );
   }
-
 
   return (
     <div className="container mx-auto px-4 py-10">
@@ -134,7 +128,7 @@ const MyBookings = () => {
               <p className="text-gray-500 text-sm">Type: {booking.category}</p>
               <p className="text-gray-600 font-medium">
                 Rent:{" "}
-                <span className="text-blue-600">${booking.price}/day</span>
+                <span className="text-blue-600">${booking.rentPrice}/day</span>
               </p>
               <p className="text-sm text-gray-500">
                 Status:{" "}

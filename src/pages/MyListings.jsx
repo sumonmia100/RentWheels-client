@@ -10,12 +10,12 @@ const MyListings = () => {
    const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const [cars, setCars] = useState([]);
-
+const token = localStorage.getItem("access-token");
   useEffect(() => {
     if (user?.email) {
       fetch(`http://localhost:3000/my-listings?email=${user.email}`, {
         headers: {
-          authorization: `Bearer ${localStorage.getItem("access-token")}`,
+          authorization: `Bearer ${token}`,
         },
       })
         .then((res) => res.json())

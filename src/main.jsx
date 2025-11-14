@@ -62,7 +62,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/mybookings",
+        path: "/my-bookings",
         Component: () => (
           <PrivateRoute>
             <MyBookings></MyBookings>

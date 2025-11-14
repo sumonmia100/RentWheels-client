@@ -26,7 +26,7 @@ const WhyRentWithUs = () => {
   ];
 
   return (
-    <section className="bg-gradient-to-b from-white to-indigo-50 py-16 px-6 md:px-12 lg:px-24">
+    <section className="bg-linear-to-b from-white to-indigo-50 py-16 px-6 md:px-12 lg:px-24">
       <div className="max-w-7xl mx-auto text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
           Why Rent <span className="text-indigo-600">With Us</span>

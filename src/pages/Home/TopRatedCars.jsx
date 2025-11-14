@@ -46,21 +46,37 @@ const TopRatedCars = () => {
             key={car.id}
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
           >
+            {/* Car Image */}
             <img
               src={car.image}
               alt={car.name}
               className="w-full h-56 object-cover"
             />
-            <div className="p-6 text-center">
+
+            <div
+              className="
+                p-6 text-center
+                bg-linear-to-br
+                from-purple-500/20 
+                via-orange-200-200
+                via-orange-200/20 
+                to-blue-200/20
+                backdrop-blur-xl 
+                border-t border-gray-200
+              "
+            >
               <h3 className="text-xl font-semibold text-gray-800">
                 {car.name}
               </h3>
-              <p className="text-sm text-gray-500">{car.type}</p>
+
+              <p className="text-sm text-gray-600">{car.type}</p>
+
               <div className="flex justify-center items-center gap-1 mt-2">
                 <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
                 <span className="font-medium">{car.rating}</span>
               </div>
-              <p className="mt-3 text-indigo-600 font-semibold">
+
+              <p className="mt-3 text-indigo-700 font-semibold">
                 ${car.price}/day
               </p>
             </div>

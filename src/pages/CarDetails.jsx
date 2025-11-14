@@ -33,7 +33,7 @@ const CarDetails = () => {
         carId: car._id,
         carName: car.name,
         imageURL: car.image,
-        userEmail: localStorage.getItem("user-email"),
+        // userEmail: localStorage.getItem("user-email"),
         rentPrice: car.rentPrice,
         providerName: car.providerName,
         providerEmail: car.providerEmail,

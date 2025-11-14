@@ -40,16 +40,51 @@ const Testimonials = () => {
       feedback:
         "The booking process was super easy and quick. The car was clean, well-maintained, and exactly as described. Highly recommend RentWheels!",
     },
+    {
+      id: 5,
+      name: "Elon Musk",
+      image: "https://i.postimg.cc/BbrC4BHV/download.jpg",
+      feedback:
+        "Impressive service! If every rental company worked this efficiently, transportation would be revolutionized.",
+    },
+    {
+      id: 6,
+      name: "Mark Zuckerberg",
+      image: "https://i.postimg.cc/MZC4W76S/download-1.jpg",
+      feedback:
+        "Smooth experience from start to finish. The UI and overall service quality are absolutely top-notch.",
+    },
+    {
+      id: 7,
+      name: "Dr. Muhammad Yunus",
+      image: "https://i.postimg.cc/gkbS9Gsy/download-2.jpg",
+      feedback:
+        "A reliable service that focuses on customer satisfaction. Great example of entrepreneurship with purpose.",
+    },
+    {
+      id: 8,
+      name: "Bill Gates",
+      image: "https://i.postimg.cc/HnwtW7z1/download-3.jpg",
+      feedback:
+        "Very efficient and well-organized. The service quality reflects careful planning and innovation.",
+    },
+    {
+      id: 9,
+      name: "Sundar Pichai",
+      image: "https://i.postimg.cc/DfrQXLQ3/images.jpg",
+      feedback:
+        "Clean interface, easy booking, and reliable cars. A premium and modern rental experience.",
+    },
   ];
 
   return (
-    <section className="py-16 bg-gradient-to-r from-indigo-50 to-white px-6 md:px-12 lg:px-24">
+    <section className="py-16 bg-linear-to-r- from-indigo-50 to-white px-6 md:px-12 lg:px-24">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mt-2">
           What Our Clients <span className="text-indigo-600">Says</span>
         </h2>
         <div className="flex justify-center mt-3">
-          <span className="w-16 h-[2px] bg-red-500"></span>
+          <span className="w-16 h-0.5 bg-red-500"></span>
         </div>
       </div>
 
