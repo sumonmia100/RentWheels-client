@@ -25,7 +25,7 @@ const AddCar = () => {
     const token = localStorage.getItem("access-token");
 
     try {
-      const res = await fetch("http://localhost:3000/cars", {
+      const res = await fetch("https://rent-wheel-server-side.vercel.app/cars", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,13 +47,14 @@ const AddCar = () => {
       }
     } catch (err) {
       toast.error("Something went wrong!");
+      console.error("Add Car Error:", err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 py-10">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-blue-50 via-indigo-50 to-purple-50 py-10">
       <Fade cascade damping={0.1}>
         <div className="w-full max-w-3xl bg-white shadow-2xl rounded-3xl p-10 border border-indigo-100">
           <Slide direction="down" triggerOnce>

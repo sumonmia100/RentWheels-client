@@ -20,7 +20,7 @@ const BrowseCars = ({_id}) => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3000/cars")
+    fetch("https://rent-wheel-server-side.vercel.app/cars")
       .then((res) => res.json())
       .then((data) => {
         setCars(data);

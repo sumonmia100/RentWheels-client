@@ -13,7 +13,7 @@ const MyListings = () => {
 const token = localStorage.getItem("access-token");
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/my-listings?email=${user.email}`, {
+      fetch(`https://rent-wheel-server-side.vercel.app/my-listings?email=${user.email}`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -35,7 +35,7 @@ const token = localStorage.getItem("access-token");
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await fetch(`http://localhost:3000/cars/${id}`, {
+        const res = await fetch(`https://rent-wheel-server-side.vercel.app/cars/${id}`, {
           method: "DELETE",
           headers: {
             authorization: `Bearer ${localStorage.getItem("access-token")}`,
@@ -64,7 +64,7 @@ const token = localStorage.getItem("access-token");
       status: form.status.value,
     };
 
-    const res = await fetch(`http://localhost:3000/cars/${editingCar._id}`, {
+    const res = await fetch(`https://rent-wheel-server-side.vercel.app/cars/${editingCar._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

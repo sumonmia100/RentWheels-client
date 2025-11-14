@@ -15,7 +15,7 @@ const MyBookings = () => {
 
     const token = localStorage.getItem("access-token");
 
-    fetch(`http://localhost:3000/bookings`, {
+    fetch(`https://rent-wheel-server-side.vercel.app/bookings`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -54,7 +54,7 @@ const MyBookings = () => {
     if (!result.isConfirmed) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/bookings/${id}`, {
+      const res = await fetch(`https://rent-wheel-server-side.vercel.app/bookings/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

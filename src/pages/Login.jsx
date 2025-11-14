@@ -21,7 +21,7 @@ const Login = () => {
   // 🔹 Get JWT token and save in localStorage
   const getToken = async (userEmail) => {
     try {
-      const res = await fetch("http://localhost:3000/jwt", {
+      const res = await fetch("https://rent-wheel-server-side.vercel.app/jwt", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email:userEmail}),

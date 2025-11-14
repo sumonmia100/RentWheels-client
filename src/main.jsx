@@ -28,7 +28,7 @@ const router = createBrowserRouter([
       {
         path: "/",
         loader: async () => {
-          const res = await fetch("http://localhost:3000/cars");
+          const res = await fetch("https://rent-wheel-server-side.vercel.app/cars");
           return res.json();
         },
         Component: Home,
@@ -72,7 +72,7 @@ const router = createBrowserRouter([
       {
         path: "/featurecard",
         loader: async () => {
-          const res = await fetch("http://localhost:3000/cars");
+          const res = await fetch("https://rent-wheel-server-side.vercel.app/cars");
           return res.json();
         },
         Component: FeaturedCars,

@@ -9,7 +9,7 @@ const CarDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/cars/${id}`)
+    fetch(`https://rent-wheel-server-side.vercel.app/cars/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setCar(data);
@@ -41,7 +41,7 @@ const CarDetails = () => {
         date: new Date().toISOString(),
       };
 
-      const res = await fetch("http://localhost:3000/my-bookings", {
+      const res = await fetch("https://rent-wheel-server-side.vercel.app/my-bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
