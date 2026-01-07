@@ -21,12 +21,6 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  // Demo credentials
-  const demoCredentials = {
-    user: { email: "demo@rentwheels.com", password: "Demo123!" },
-    admin: { email: "admin@rentwheels.com", password: "Admin123!" },
-  };
-
   // Form validation
   const validateForm = () => {
     const newErrors = {};
@@ -45,14 +39,6 @@ const Login = () => {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  // Fill demo credentials
-  const fillDemoCredentials = (type) => {
-    const creds = demoCredentials[type];
-    setEmail(creds.email);
-    setPassword(creds.password);
-    setErrors({});
   };
 
   //Get JWT token and save in localStorage
@@ -199,31 +185,6 @@ const Login = () => {
               {loading ? "Signing In..." : "Sign In"}
             </Button>
           </form>
-
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <p className="text-sm text-blue-800 font-medium mb-3">
-              Quick Demo Access:
-            </p>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => fillDemoCredentials("user")}
-                className="flex-1 text-xs"
-              >
-                Demo User
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => fillDemoCredentials("admin")}
-                className="flex-1 text-xs"
-              >
-                Demo Admin
-              </Button>
-            </div>
-          </div>
 
           <div className="mt-6">
             <div className="relative">
