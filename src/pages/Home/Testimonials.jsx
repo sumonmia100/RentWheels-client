@@ -78,13 +78,13 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="py-16 bg-linear-to-r- from-indigo-50 to-white px-6 md:px-12 lg:px-24">
+    <section className="py-16 bg-background px-6 md:px-12 lg:px-24">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mt-2">
-          What Our Clients <span className="text-indigo-600">Says</span>
+        <h2 className="text-3xl md:text-4xl font-bold text-text-primary mt-2">
+          What Our Clients <span className="text-primary">Says</span>
         </h2>
         <div className="flex justify-center mt-3">
-          <span className="w-16 h-0.5 bg-red-500"></span>
+          <span className="w-16 h-0.5 bg-secondary"></span>
         </div>
       </div>
 
@@ -105,7 +105,7 @@ const Testimonials = () => {
       >
         {reviews.map((review) => (
           <SwiperSlide key={review.id}>
-            <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 relative text-center">
+            <div className="bg-surface p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 relative text-center border border-border">
               <div className="flex justify-center mb-3">
                 {[...Array(5)].map((_, i) => (
                   <span key={i} className="text-yellow-400 text-xl">
@@ -113,17 +113,19 @@ const Testimonials = () => {
                   </span>
                 ))}
               </div>
-              <p className="text-gray-600 mb-6">{review.feedback}</p>
+              <p className="text-text-secondary mb-6">{review.feedback}</p>
               <div className="flex flex-col items-center">
                 <img
                   src={review.image}
                   alt={review.name}
-                  className="w-40 h-40 rounded-full object-cover border-4 border-indigo-100 mb-3"
+                  className="w-40 h-40 rounded-full object-cover border-4 border-border mb-3"
                 />
-                <h3 className="font-semibold text-gray-800">{review.name}</h3>
-                <p className="text-red-500 text-sm font-medium">Customer</p>
+                <h3 className="font-semibold text-text-primary">
+                  {review.name}
+                </h3>
+                <p className="text-secondary text-sm font-medium">Customer</p>
               </div>
-              <Quote className="w-10 h-10 text-red-200 absolute bottom-4 right-6" />
+              <Quote className="w-10 h-10 text-text-secondary opacity-20 absolute bottom-4 right-6" />
             </div>
           </SwiperSlide>
         ))}

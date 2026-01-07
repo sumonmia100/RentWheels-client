@@ -25,7 +25,7 @@ const AddCar = () => {
     const token = localStorage.getItem("access-token");
 
     try {
-      const res = await fetch("https://rent-wheel-server-side.vercel.app/cars", {
+      const res = await fetch("https://rent-wheel-server-side-api.vercel.app/cars", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

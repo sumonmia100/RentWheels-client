@@ -15,7 +15,7 @@ const MyBookings = () => {
 
     const token = localStorage.getItem("access-token");
 
-    fetch(`https://rent-wheel-server-side.vercel.app/bookings`, {
+    fetch(`https://rent-wheel-server-side-api.vercel.app/bookings`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -54,10 +54,13 @@ const MyBookings = () => {
     if (!result.isConfirmed) return;
 
     try {
-      const res = await fetch(`https://rent-wheel-server-side.vercel.app/bookings/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `https://rent-wheel-server-side-api.vercel.app/bookings/${id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       const data = await res.json();
 
@@ -92,11 +95,13 @@ const MyBookings = () => {
   if (bookings.length === 0) {
     return (
       <div className="text-center mt-20">
-        <FaCarSide className="text-5xl text-gray-400 mx-auto mb-4" />
-        <h2 className="text-2xl font-semibold text-gray-600">
+        <FaCarSide className="text-5xl text-text-secondary mx-auto mb-4" />
+        <h2 className="text-2xl font-semibold text-text-primary">
           No Bookings Found
         </h2>
-        <p className="text-gray-400 mt-2">You haven’t booked any cars yet.</p>
+        <p className="text-text-secondary mt-2">
+          You haven’t booked any cars yet.
+        </p>
       </div>
     );
   }
@@ -150,7 +155,7 @@ const MyBookings = () => {
                 >
                   <FaTrashAlt /> Cancel
                 </button>
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-text-secondary">
                   {booking.date || "No date info"}
                 </span>
               </div>

@@ -4,8 +4,10 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../contexts/AuthProvider";
 import app from "../firebase.init";
 import toast from "react-hot-toast";
-import Swal from "sweetalert2";
 import { FcGoogle } from "react-icons/fc";
+import Button from "../components/Button";
+import Input from "../components/Input";
+import Card from "../components/Card";
 
 const auth = getAuth(app);
 
@@ -14,22 +16,59 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  // 🔹 Get JWT token and save in localStorage
+  // Demo credentials
+  const demoCredentials = {
+    user: { email: "demo@rentwheels.com", password: "Demo123!" },
+    admin: { email: "admin@rentwheels.com", password: "Admin123!" },
+  };
+
+  // Form validation
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Fill demo credentials
+  const fillDemoCredentials = (type) => {
+    const creds = demoCredentials[type];
+    setEmail(creds.email);
+    setPassword(creds.password);
+    setErrors({});
+  };
+
+  //Get JWT token and save in localStorage
   const getToken = async (userEmail) => {
     try {
-      const res = await fetch("https://rent-wheel-server-side.vercel.app/jwt", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email:userEmail}),
-      });
+      const res = await fetch(
+        "https://rent-wheel-server-side-api.vercel.app/jwt",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: userEmail }),
+        }
+      );
       const data = await res.json();
       if (data.token) {
         localStorage.setItem("access-token", data.token);
-        // toast.success("Login successful!");
         navigate("/");
       }
     } catch (err) {
@@ -40,7 +79,13 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     setLoading(true);
+    setErrors({});
 
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
@@ -51,11 +96,19 @@ const Login = () => {
       })
       .catch((err) => {
         setLoading(false);
-        Swal.fire({
-          icon: "error",
-          title: "Login Failed",
-          text: err.message.split(":")[1] || "Invalid credentials",
-        });
+        let errorMessage = "Invalid credentials";
+
+        if (err.code === "auth/user-not-found") {
+          errorMessage = "No account found with this email";
+        } else if (err.code === "auth/wrong-password") {
+          errorMessage = "Incorrect password";
+        } else if (err.code === "auth/invalid-email") {
+          errorMessage = "Invalid email address";
+        } else if (err.code === "auth/too-many-requests") {
+          errorMessage = "Too many failed attempts. Please try again later";
+        }
+
+        setErrors({ general: errorMessage });
       });
   };
 
@@ -66,73 +119,156 @@ const Login = () => {
         toast.success("Logged in with Google!");
         navigate(from, { replace: true });
       })
-      .catch(() =>
-        Swal.fire({
-          icon: "error",
-          title: "Login Failed",
-          text: "Something went wrong with Google login",
-        })
-      );
+      .catch((err) => {
+        let errorMessage = "Something went wrong with Google login";
+        if (err.code === "auth/popup-closed-by-user") {
+          errorMessage = "Login cancelled";
+        }
+        setErrors({ general: errorMessage });
+      });
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[80vh] bg-gray-50">
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-[90%] md:w-[400px]">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Welcome Back to <span className="text-blue-600">RentWheels</span>
-        </h2>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <Card className="animate-fade-in">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-text-primary mb-2">
+              Welcome Back
+            </h1>
+            <p className="text-text-secondary">
+              Sign in to your{" "}
+              <span className="text-primary font-semibold">RentWheels</span>{" "}
+              account
+            </p>
+          </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              onChange={(e) => setEmail(e.target.value)}
+          {errors.general && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm flex items-center">
+                <svg
+                  className="w-4 h-4 mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {errors.general}
+              </p>
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} className="space-y-6">
+            <Input
+              label="Email Address"
               type="email"
-              required
-              className="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (errors.email) setErrors((prev) => ({ ...prev, email: "" }));
+              }}
               placeholder="Enter your email"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
+              error={errors.email}
               required
-              className="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200"
-              placeholder="Enter your password"
             />
+
+            <Input
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (errors.password)
+                  setErrors((prev) => ({ ...prev, password: "" }));
+              }}
+              placeholder="Enter your password"
+              error={errors.password}
+              required
+            />
+
+            <Button
+              type="submit"
+              loading={loading}
+              className="w-full"
+              size="lg"
+            >
+              {loading ? "Signing In..." : "Sign In"}
+            </Button>
+          </form>
+
+          {/* Demo Credentials */}
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <p className="text-sm text-blue-800 font-medium mb-3">
+              Quick Demo Access:
+            </p>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => fillDemoCredentials("user")}
+                className="flex-1 text-xs"
+              >
+                Demo User
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => fillDemoCredentials("admin")}
+                className="flex-1 text-xs"
+              >
+                Demo Admin
+              </Button>
+            </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-border"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-surface text-text-secondary">
+                  Or continue with
+                </span>
+              </div>
+            </div>
 
-        <div className="my-4 text-center text-gray-500">— or —</div>
+            <div className="mt-4 space-y-3">
+              <Button
+                variant="surface"
+                onClick={handleGoogleLogin}
+                className="w-full"
+                size="lg"
+              >
+                <FcGoogle className="w-5 h-5 mr-2" />
+                Continue with Google
+              </Button>
 
-        <button
-          onClick={handleGoogleLogin}
-          className="flex justify-center items-center gap-2 w-full border py-2 rounded-lg hover:bg-gray-100 transition"
-        >
-          <FcGoogle className="text-xl" /> Login with Google
-        </button>
+              {/* Facebook and GitHub temporarily disabled - requires Firebase configuration */}
+              <div className="text-center">
+                <p className="text-xs text-text-secondary">
+                  More login options coming soon
+                </p>
+              </div>
+            </div>
+          </div>
 
-        <p className="text-center text-sm text-gray-600 mt-4">
-          Don’t have an account?{" "}
-          <Link to="/signup" className="text-blue-600 hover:underline">
-            Register Now
-          </Link>
-        </p>
+          <div className="mt-8 text-center">
+            <p className="text-text-secondary">
+              Don't have an account?{" "}
+              <Link
+                to="/signup"
+                className="text-primary hover:text-primary/80 font-medium transition-colors"
+              >
+                Create Account
+              </Link>
+            </p>
+          </div>
+        </Card>
       </div>
     </div>
   );

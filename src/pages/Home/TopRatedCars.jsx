@@ -30,12 +30,12 @@ const TopRatedCars = () => {
   ];
 
   return (
-    <section className="py-16 bg-gray-50 px-6 md:px-12 lg:px-24">
+    <section className="py-16 bg-background px-6 md:px-12 lg:px-24">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-          Top Rated <span className="text-indigo-600">Cars</span>
+        <h2 className="text-3xl md:text-4xl font-bold text-text-primary">
+          Top Rated <span className="text-primary">Cars</span>
         </h2>
-        <p className="text-gray-600 mt-3">
+        <p className="text-text-secondary mt-3">
           Check out the most popular cars loved by our customers!
         </p>
       </div>
@@ -44,7 +44,7 @@ const TopRatedCars = () => {
         {cars.map((car) => (
           <div
             key={car.id}
-            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
+            className="bg-surface rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-border"
           >
             {/* Car Image */}
             <img
@@ -53,30 +53,21 @@ const TopRatedCars = () => {
               className="w-full h-56 object-cover"
             />
 
-            <div
-              className="
-                p-6 text-center
-                bg-linear-to-br
-                from-purple-500/20 
-                via-orange-200-200
-                via-orange-200/20 
-                to-blue-200/20
-                backdrop-blur-xl 
-                border-t border-gray-200
-              "
-            >
-              <h3 className="text-xl font-semibold text-gray-800">
+            <div className="p-6 text-center">
+              <h3 className="text-xl font-semibold text-text-primary">
                 {car.name}
               </h3>
 
-              <p className="text-sm text-gray-600">{car.type}</p>
+              <p className="text-sm text-text-secondary">{car.type}</p>
 
               <div className="flex justify-center items-center gap-1 mt-2">
                 <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-                <span className="font-medium">{car.rating}</span>
+                <span className="font-medium text-text-primary">
+                  {car.rating}
+                </span>
               </div>
 
-              <p className="mt-3 text-indigo-700 font-semibold">
+              <p className="mt-3 text-primary font-semibold">
                 ${car.price}/day
               </p>
             </div>

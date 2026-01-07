@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 
 const Spinner = () => {
-  const [loading , setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -11,12 +11,11 @@ const Spinner = () => {
     return () => clearTimeout(timer);
   }, [location]);
 
-
   if (!loading) return null;
 
   return (
-    <div className="fixed inset-0 bg-white/70 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity duration-500">
-      <div className="w-14 h-14 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    <div className="fixed inset-0 bg-background/70 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity duration-500">
+      <div className="w-14 h-14 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
     </div>
   );
 };

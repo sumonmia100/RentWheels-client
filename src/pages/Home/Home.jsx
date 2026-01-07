@@ -1,21 +1,41 @@
-import React from 'react';
-import HeroSlider from './HeroSlider';
-import FeaturedCars from './FeaturedCars';
-import WhyRentWithUs from './WhyRentWithUs';
-import TopRatedCars from './TopRatedCars';
-import Testimonials from './Testimonials';
-const Home = () => {
-    return (
-        <div>
-            <HeroSlider></HeroSlider>
-            <FeaturedCars></FeaturedCars>
-            <WhyRentWithUs></WhyRentWithUs>
-            <TopRatedCars></TopRatedCars>
+import React from "react";
+import HeroSlider from "./HeroSlider";
+import FeaturedCars from "./FeaturedCars";
+import WhyRentWithUs from "./WhyRentWithUs";
+import Categories from "./Categories";
+import HowItWorks from "./HowItWorks";
+import TopRatedCars from "./TopRatedCars";
+import Testimonials from "./Testimonials";
+import Newsletter from "./Newsletter";
 
-            <Testimonials></Testimonials>
-            
-        </div>
-    );
+const Home = () => {
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <HeroSlider />
+
+      {/* Featured Cars Section */}
+      <FeaturedCars />
+
+      {/* Categories Section */}
+      <Categories />
+
+      {/* Why Choose Us Section */}
+      <WhyRentWithUs />
+
+      {/* How It Works Section */}
+      <HowItWorks />
+
+      {/* Top Rated Cars Section */}
+      <TopRatedCars />
+
+      {/* Testimonials Section */}
+      <Testimonials />
+
+      {/* Newsletter Section */}
+      <Newsletter />
+    </div>
+  );
 };
 
 export default Home;

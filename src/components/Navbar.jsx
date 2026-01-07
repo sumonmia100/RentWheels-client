@@ -1,371 +1,338 @@
-// import { useContext, useState } from "react";
-// import { Link, NavLink, useNavigate } from "react-router";
-// import { AuthContext } from "../contexts/AuthProvider";
-// import { FaBars, FaTimes } from "react-icons/fa";
-// import toast from "react-hot-toast";
-// import Spinner from "./spinner";
-
-// const Navbar = () => {
-//   const { user, logOut } = useContext(AuthContext);
-//   const [menuOpen, setMenuOpen] = useState(false);
-//   const [dropdownOpen, setDropdownOpen] = useState(false);
-//   const navigate = useNavigate();
-
-//   const handleLogout = () => {
-//     logOut()
-//       .then(() => {
-//         toast.success("Logged out successfully!");
-//         navigate("/");
-//       })
-//       .catch(() => toast.error("Logout failed!"));
-//   };
-
-//   const links = (
-//     <>
-//       <li>
-//         <NavLink
-//           to="/"
-//           className={({ isActive }) =>
-//             isActive ? "text-blue-600 font-semibold" : "hover:text-blue-500"
-//           }
-//         >
-//           Home
-//         </NavLink>
-//       </li>
-//       <li>
-//         <NavLink
-//           to="/browse"
-//           className={({ isActive }) =>
-//             isActive ? "text-blue-600 font-semibold" : "hover:text-blue-500"
-//           }
-//         >
-//           Browse Cars
-//         </NavLink>
-//       </li>
-//       {user && (
-//         <>
-//           <li>
-//             <NavLink
-//               to="/addcar"
-//               className={({ isActive }) =>
-//                 isActive ? "text-blue-600 font-semibold" : "hover:text-blue-500"
-//               }
-//             >
-//               Add Car
-//             </NavLink>
-//           </li>
-//           <li>
-//             <NavLink
-//               to="/mylistings"
-//               className={({ isActive }) =>
-//                 isActive ? "text-blue-600 font-semibold" : "hover:text-blue-500"
-//               }
-//             >
-//               My Listings
-//             </NavLink>
-//           </li>
-//           <li>
-//             <NavLink
-//               to="/my-bookings"
-//               className={({ isActive }) =>
-//                 isActive ? "text-blue-600 font-semibold" : "hover:text-blue-500"
-//               }
-//             >
-//               My Bookings
-//             </NavLink>
-//           </li>
-//         </>
-//       )}
-//     </>
-//   );
-
-//   return (
-//     <nav className="bg-gray-300 shadow-md sticky top-0 z-50">
-//       <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center h-16">
-//         {/* Logo */}
-//         <Link to="/" className="flex items-center gap-2">
-//           <h1 className="text-xl font-bold text-gray-800">
-//             Rent<span className="text-blue-600">Wheels</span>
-//           </h1>
-//         </Link>
-
-//         {/* Desktop Menu */}
-//         <ul className="hidden md:flex items-center space-x-6">{links}</ul>
-
-//         {/* User / Login Section */}
-//         <div className="hidden md:flex items-center gap-4">
-//           {!user ? (
-//             <Link
-//               to="/login"
-//               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-//             >
-//               Login
-//             </Link>
-//           ) : (
-//             <div className="relative">
-//               <img
-//                 src={
-//                   user?.photoURL || "https://i.ibb.co/55Gf8qL/default-user.png"
-//                 }
-//                 alt="User"
-//                 onClick={() => setDropdownOpen(!dropdownOpen)}
-//                 className="h-10 w-10 rounded-full border-2 border-blue-600 cursor-pointer"
-//               />
-//               {dropdownOpen && (
-//                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg border">
-//                   <div className="px-4 py-3 text-sm text-gray-700 border-b">
-//                     <p className="font-semibold">{user.displayName}</p>
-//                     <p className="text-gray-500 text-xs">{user.email}</p>
-//                   </div>
-//                   <button
-//                     onClick={handleLogout}
-//                     className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
-//                   >
-//                     Log Out
-//                   </button>
-//                 </div>
-//               )}
-//             </div>
-//           )}
-//         </div>
-
-//         {/* Mobile Menu Icon */}
-//         <button
-//           className="md:hidden text-gray-800 text-2xl"
-//           onClick={() => setMenuOpen(!menuOpen)}
-//         >
-//           {menuOpen ? <FaTimes /> : <FaBars />}
-//         </button>
-//       </div>
-
-//       {/* Mobile Dropdown */}
-//       {menuOpen && (
-//         <ul className="md:hidden bg-white shadow-md flex flex-col space-y-4 px-6 py-4">
-//           {links}
-//           {!user ? (
-//             <Link
-//               to="/login"
-//               onClick={() => setMenuOpen(false)}
-//               className="bg-blue-600 text-white px-4 py-2 rounded-lg text-center"
-//             >
-//               Login
-//             </Link>
-//           ) : (
-//             <button
-//               onClick={handleLogout}
-//               className="bg-red-500 text-white px-4 py-2 rounded-lg text-center"
-//             >
-//               Log Out
-//             </button>
-//           )}
-//         </ul>
-//       )}
-//       {navigate.state === "loading" && <Spinner></Spinner>}
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
-
-
-
 import { useContext, useState, useEffect, useRef } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../contexts/AuthProvider";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { useDarkMode } from "../hooks/useDarkMode";
+import Button from "./Button";
 import toast from "react-hot-toast";
-import Spinner from "./spinner";
+import logo from "../assets/rentWheels.jpeg";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { darkMode, toggleDarkMode } = useDarkMode();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
-  // Logout
+  // Handle logout
   const handleLogout = () => {
     logOut()
       .then(() => {
         toast.success("Logged out successfully!");
         navigate("/");
+        setProfileDropdownOpen(false);
       })
       .catch(() => toast.error("Logout failed!"));
   };
 
-  // Outside click for dropdown
+  // Close dropdowns when clicking outside
   useEffect(() => {
-    function handleClick(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false);
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setProfileDropdownOpen(false);
+      }
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
+        setMobileMenuOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Outside click for mobile menu
-  useEffect(() => {
-    function handleClick(e) {
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
-        setMenuOpen(false);
+  // Public navigation routes (minimum 3 when logged out)
+  const publicRoutes = [
+    { name: "Home", path: "/" },
+    { name: "Browse Cars", path: "/browse" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
+  ];
+
+  // Protected navigation routes (minimum 5 when logged in)
+  const protectedRoutes = [
+    { name: "Dashboard", path: "/dashboard" },
+    { name: "Add Car", path: "/addcar" },
+    { name: "My Listings", path: "/mylistings" },
+    { name: "My Bookings", path: "/my-bookings" },
+    { name: "Browse Cars", path: "/browse" },
+  ];
+
+  const NavLinkComponent = ({ to, children, mobile = false }) => (
+    <NavLink
+      to={to}
+      onClick={() => mobile && setMobileMenuOpen(false)}
+      className={({ isActive }) =>
+        `transition-colors duration-200 font-medium ${
+          mobile
+            ? `block px-3 py-2 rounded-md text-base ${
+                isActive
+                  ? "bg-primary text-white"
+                  : "text-text-primary hover:bg-surface hover:text-primary"
+              }`
+            : `px-3 py-2 rounded-md text-sm ${
+                isActive
+                  ? "text-primary font-semibold"
+                  : "text-text-primary hover:text-primary"
+              }`
+        }`
       }
-    }
-
-    if (menuOpen) {
-      document.addEventListener("mousedown", handleClick);
-    }
-
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [menuOpen]);
-
-  const links = (
-    <>
-      <li>
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            isActive ? "text-blue-600 font-semibold" : "hover:text-blue-500"
-          }
-        >
-          Home
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to="/browse"
-          className={({ isActive }) =>
-            isActive ? "text-blue-600 font-semibold" : "hover:text-blue-500"
-          }
-        >
-          Browse Cars
-        </NavLink>
-      </li>
-      {user && (
-        <>
-          <li>
-            <NavLink
-              to="/addcar"
-              className={({ isActive }) =>
-                isActive ? "text-blue-600 font-semibold" : "hover:text-blue-500"
-              }
-            >
-              Add Car
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/mylistings"
-              className={({ isActive }) =>
-                isActive ? "text-blue-600 font-semibold" : "hover:text-blue-500"
-              }
-            >
-              My Listings
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/my-bookings"
-              className={({ isActive }) =>
-                isActive ? "text-blue-600 font-semibold" : "hover:text-blue-500"
-              }
-            >
-              My Bookings
-            </NavLink>
-          </li>
-        </>
-      )}
-    </>
+    >
+      {children}
+    </NavLink>
   );
 
   return (
-    <nav className="bg-gray-300 shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center h-16">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <h1 className="text-xl font-bold text-gray-800">
-            Rent<span className="text-blue-600">Wheels</span>
-          </h1>
-        </Link>
+    <nav className="sticky top-0 z-50 bg-surface border-b border-border shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link
+            to="/"
+            className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
+          >
+            <img
+              src={logo}
+              alt="RentWheels"
+              className="h-10 w-10 rounded-lg object-cover"
+            />
+            <span className="text-xl font-bold text-primary hidden sm:block">
+              RentWheels
+            </span>
+          </Link>
 
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center space-x-6">{links}</ul>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-1">
+            {publicRoutes.map((route) => (
+              <NavLinkComponent key={route.path} to={route.path}>
+                {route.name}
+              </NavLinkComponent>
+            ))}
 
-        {/* User / Login */}
-        <div className="hidden md:flex items-center gap-4">
-          {!user ? (
-            <Link
-              to="/login"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-            >
-              Login
-            </Link>
-          ) : (
-            <div className="relative" ref={dropdownRef}>
-              <img
-                src={
-                  user?.photoURL || "https://i.ibb.co/55Gf8qL/default-user.png"
-                }
-                alt="User"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="h-10 w-10 rounded-full border-2 border-blue-600 cursor-pointer"
-              />
-
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg border">
-                  <div className="px-4 py-3 text-sm text-gray-700 border-b">
-                    <p className="font-semibold">{user.displayName}</p>
-                    <p className="text-gray-500 text-xs">{user.email}</p>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
+            {user && (
+              <div className="relative group">
+                <button className="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-text-primary hover:text-primary transition-colors">
+                  <span>More</span>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    Log Out
-                  </button>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <div className="absolute left-0 mt-2 w-48 bg-surface rounded-md shadow-lg border border-border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                  {protectedRoutes.slice(1).map((route) => (
+                    <NavLinkComponent key={route.path} to={route.path}>
+                      <div className="px-4 py-2 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-md mx-1">
+                        {route.name}
+                      </div>
+                    </NavLinkComponent>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Right side actions */}
+          <div className="flex items-center space-x-4">
+            {/* Dark mode toggle */}
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {darkMode ? (
+                <svg
+                  className="w-5 h-5 text-yellow-500"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="w-5 h-5 text-gray-700"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                </svg>
+              )}
+            </button>
+
+            {/* Authentication section */}
+            {user ? (
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                  className="flex items-center space-x-2 p-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+                >
+                  <img
+                    src={
+                      user?.photoURL ||
+                      "https://i.ibb.co/55Gf8qL/default-user.png"
+                    }
+                    alt="Profile"
+                    className="h-8 w-8 rounded-full border-2 border-primary object-cover"
+                  />
+                  <span className="hidden sm:block text-sm font-medium text-text-primary max-w-[100px] truncate">
+                    {user.displayName || "User"}
+                  </span>
+                  <svg
+                    className="w-4 h-4 text-text-secondary"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+
+                {profileDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-56 bg-surface rounded-lg shadow-lg border border-border">
+                    <div className="px-4 py-3 border-b border-border">
+                      <p className="text-sm font-medium text-text-primary truncate">
+                        {user.displayName || "User"}
+                      </p>
+                      <p className="text-xs text-text-secondary truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                    <div className="py-1">
+                      <Link
+                        to="/dashboard"
+                        onClick={() => setProfileDropdownOpen(false)}
+                        className="block px-4 py-2 text-sm text-text-primary hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+                      >
+                        Dashboard
+                      </Link>
+                      <Link
+                        to="/profile-settings"
+                        onClick={() => setProfileDropdownOpen(false)}
+                        className="block px-4 py-2 text-sm text-text-primary hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+                      >
+                        Profile Settings
+                      </Link>
+                      <hr className="my-1 border-border" />
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Link to="/login">
+                  <Button variant="ghost" size="sm">
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button variant="primary" size="sm">
+                    Sign Up
+                  </Button>
+                </Link>
+              </div>
+            )}
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+              aria-label="Toggle mobile menu"
+            >
+              {mobileMenuOpen ? (
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile menu */}
+        {mobileMenuOpen && (
+          <div ref={mobileMenuRef} className="md:hidden border-t border-border">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-surface">
+              {publicRoutes.map((route) => (
+                <NavLinkComponent key={route.path} to={route.path} mobile>
+                  {route.name}
+                </NavLinkComponent>
+              ))}
+
+              {user &&
+                protectedRoutes.map((route) => (
+                  <NavLinkComponent key={route.path} to={route.path} mobile>
+                    {route.name}
+                  </NavLinkComponent>
+                ))}
+
+              {!user && (
+                <div className="pt-4 space-y-2">
+                  <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" className="w-full">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link to="/signup" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="primary" className="w-full">
+                      Sign Up
+                    </Button>
+                  </Link>
                 </div>
               )}
             </div>
-          )}
-        </div>
-
-        {/* Mobile Menu Icon */}
-        <button
-          className="md:hidden text-gray-800 text-2xl"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <FaTimes /> : <FaBars />}
-        </button>
+          </div>
+        )}
       </div>
-
-      {/* Mobile Menu Dropdown */}
-      {menuOpen && (
-        <ul
-          ref={mobileMenuRef}
-          className="md:hidden bg-white shadow-md flex flex-col space-y-4 px-6 py-4"
-        >
-          {links}
-          {!user ? (
-            <Link
-              to="/login"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-center"
-            >
-              Login
-            </Link>
-          ) : (
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg text-center"
-            >
-              Log Out
-            </button>
-          )}
-        </ul>
-      )}
-
-      {navigate.state === "loading" && <Spinner />}
     </nav>
   );
 };

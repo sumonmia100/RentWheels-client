@@ -5,12 +5,16 @@ import {
   signOut,
   signInWithPopup,
   GoogleAuthProvider,
+  FacebookAuthProvider,
+  GithubAuthProvider,
 } from "firebase/auth";
 import app from "../firebase.init";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -18,7 +22,35 @@ const AuthProvider = ({ children }) => {
 
   const googleLogin = () => {
     setLoading(true);
-    return signInWithPopup(auth, provider);
+    return signInWithPopup(auth, googleProvider);
+  };
+
+  const facebookLogin = () => {
+    setLoading(true);
+    return signInWithPopup(auth, facebookProvider).catch((error) => {
+      setLoading(false);
+      // If Facebook is not configured, throw a more user-friendly error
+      if (error.code === "auth/operation-not-allowed") {
+        throw new Error(
+          "Facebook login is currently unavailable. Please use Google or email login."
+        );
+      }
+      throw error;
+    });
+  };
+
+  const githubLogin = () => {
+    setLoading(true);
+    return signInWithPopup(auth, githubProvider).catch((error) => {
+      setLoading(false);
+      // If GitHub is not configured, throw a more user-friendly error
+      if (error.code === "auth/operation-not-allowed") {
+        throw new Error(
+          "GitHub login is currently unavailable. Please use Google or email login."
+        );
+      }
+      throw error;
+    });
   };
 
   const logOut = () => {
@@ -34,7 +66,14 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  const authInfo = { user, loading, googleLogin, logOut };
+  const authInfo = {
+    user,
+    loading,
+    googleLogin,
+    facebookLogin,
+    githubLogin,
+    logOut,
+  };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );

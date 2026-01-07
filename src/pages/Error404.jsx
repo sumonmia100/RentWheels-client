@@ -2,12 +2,12 @@ import { Link } from "react-router";
 
 const Error404 = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-50 text-center px-4">
-      <h1 className="text-8xl font-extrabold text-blue-600 mb-4">404</h1>
-      <h2 className="text-3xl font-semibold text-gray-800 mb-2">
+    <div className="flex flex-col items-center justify-center h-screen bg-background text-center px-4">
+      <h1 className="text-8xl font-extrabold text-primary mb-4">404</h1>
+      <h2 className="text-3xl font-semibold text-text-primary mb-2">
         Page Not Found
       </h2>
-      <p className="text-gray-500 mb-8 max-w-md">
+      <p className="text-text-secondary mb-8 max-w-md">
         Oops! The page you’re looking for doesn’t exist or has been moved.
       </p>
 

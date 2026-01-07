@@ -1,24 +1,16 @@
 import { useState, useEffect } from "react";
-import { useLoaderData, useNavigate } from "react-router";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useLoaderData } from "react-router";
+import { motion } from "framer-motion";
+import CarCard from "../../components/CarCard";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 
-const auth = getAuth();
-
-const FeaturedCarSearch = () => {
-  const cars = useLoaderData(); // loaded from server
+const FeaturedCars = () => {
+  const cars = useLoaderData() || []; // loaded from server with fallback
   const [searchTerm, setSearchTerm] = useState("");
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  //  Firebase Auth Listener
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  //  Filter cars by name, category, or providerName
+  // Filter cars by name, category, or providerName
   const filteredCars = cars.filter((car) =>
     [car.name, car.category, car.providerName]
       .join(" ")
@@ -26,81 +18,124 @@ const FeaturedCarSearch = () => {
       .includes(searchTerm.toLowerCase())
   );
 
-  // Navigate to details or login
-  const handleClick = (id) => {
-    if (user) {
-      navigate(`/cars/${id}`);
-    } else {
-      navigate("/login");
-    }
-  };
+  // Show loading cards when no data
+  const showLoadingCards = cars.length === 0;
+  const loadingCards = Array.from({ length: 6 }, (_, i) => i);
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Search Bar */}
-      <div className="max-w-xl mx-auto mb-10 text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
-           Find Your Perfect Car
-        </h2>
-        <input
-          type="text"
-          placeholder="Search by name, category, or provider..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        />
-      </div>
-
-      {/*  Featured / Filtered Cars */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCars.length > 0 ? (
-          filteredCars.map((car) => (
-            <div
-              key={car._id}
-              className="bg-white shadow-md rounded-2xl p-4 hover:shadow-xl transition-all duration-300"
-            >
-              <div className="relative">
-                <img
-                  src={car.image}
-                  alt={car.name}
-                  className="w-full h-48 object-cover rounded-xl mb-3"
-                />
-                <span className="absolute top-3 right-3 bg-blue-600 text-white text-sm px-3 py-1 rounded-full shadow">
-                  ${car.pricePerDay}/day
-                </span>
-              </div>
-
-              <h3 className="text-xl font-semibold text-gray-800">
-                {car.name}
-              </h3>
-              <p className="text-gray-600 mt-1">Type: {car.category}</p>
-              <p className="text-gray-800 font-medium mt-1">
-                Provider: {car.providerName}
-              </p>
-              <p
-                className={`text-sm font-semibold mt-2 ${
-                  car.status === "Available" ? "text-green-600" : "text-red-500"
-                }`}
-              >
-                Status: {car.status || "Available"}
-              </p>
-
-              <button
-                onClick={() => handleClick(car._id)}
-                className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition-all"
-              >
-                View Details 
-              </button>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500 col-span-full">
-            No cars found matching your search 
+    <section className="py-16 bg-background">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4">
+            Featured Cars
+          </h2>
+          <p className="text-lg text-text-secondary max-w-2xl mx-auto mb-8">
+            Discover our handpicked selection of premium vehicles from trusted
+            local owners
           </p>
+
+          {/* Search Bar */}
+          <div className="max-w-md mx-auto">
+            <Input
+              type="text"
+              placeholder="Search by name, category, or provider..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="text-center"
+            />
+          </div>
+        </motion.div>
+
+        {/* Cars Grid */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
+          {showLoadingCards ? (
+            // Show loading skeleton cards
+            loadingCards.map((index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <CarCard loading={true} />
+              </motion.div>
+            ))
+          ) : filteredCars.length > 0 ? (
+            // Show actual cars
+            filteredCars.map((car, index) => (
+              <motion.div
+                key={car._id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <CarCard car={car} />
+              </motion.div>
+            ))
+          ) : (
+            // No results found
+            <div className="col-span-full text-center py-12">
+              <svg
+                className="w-16 h-16 text-neutral-400 mx-auto mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 20.4a7.962 7.962 0 01-5-1.109M15 3H9a2 2 0 00-2 2v1.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 000 1.414l6.414 6.414a1 1 0 01.293.707V20a2 2 0 002 2h6a2 2 0 002-2v-1.586a1 1 0 01.293-.707l6.414-6.414a1 1 0 000-1.414L16.707 5.293A1 1 0 0016 4.586V3a2 2 0 00-2-2z"
+                />
+              </svg>
+              <h3 className="text-lg font-medium text-text-primary mb-2">
+                No cars found
+              </h3>
+              <p className="text-text-secondary mb-4">
+                Try adjusting your search terms or browse all available cars
+              </p>
+              <Button variant="outline" onClick={() => setSearchTerm("")}>
+                Clear Search
+              </Button>
+            </div>
+          )}
+        </motion.div>
+
+        {/* View All Cars Button */}
+        {!showLoadingCards && cars.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="text-center mt-12"
+          >
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => (window.location.href = "/browse")}
+            >
+              View All Cars
+            </Button>
+          </motion.div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 
-export default FeaturedCarSearch;
+export default FeaturedCars;

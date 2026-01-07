@@ -5,6 +5,8 @@ import { useAuth } from "../hook/useAuth";
 import Swal from "sweetalert2";
 
 
+
+
 const MyListings = () => {
   // Loader
    const [loading, setLoading] = useState(true);
@@ -13,7 +15,7 @@ const MyListings = () => {
 const token = localStorage.getItem("access-token");
 useEffect(() => {
   if (user?.email) {
-    fetch(`http://localhost:3000/my-listings?email=${user.email}`, {
+    fetch(`https://rent-wheel-server-side-api.vercel.app/my-listings?email=${user.email}`, {
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -23,7 +25,7 @@ useEffect(() => {
         if (Array.isArray(data)) {
           setCars(data);
         } else {
-          setCars([]); // prevent map crash
+          setCars([]);
         }
         setLoading(false);
       })
@@ -45,7 +47,7 @@ useEffect(() => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await fetch(`http://localhost:3000/cars/${id}`, {
+        const res = await fetch(`https://rent-wheel-server-side-api.vercel.app/cars/${id}`, {
           method: "DELETE",
           headers: {
             authorization: `Bearer ${localStorage.getItem("access-token")}`,
@@ -74,7 +76,7 @@ useEffect(() => {
       status: form.status.value,
     };
 
-    const res = await fetch(`http://localhost:3000/cars/${editingCar._id}`, {
+    const res = await fetch(`https://rent-wheel-server-side-api.vercel.app/cars/${editingCar._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
